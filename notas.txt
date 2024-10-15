@@ -1,0 +1,275 @@
+--------------Comenzando-----------------
+//Instalacion de package.json
+npm init
+
+//Instalacion de Dependencias
+npm i express // Instalacion de express
+npm i -D express // Creacion de ambiente Dev 
+
+// El codigo se ejecuta directamente desde package.json directamente de 
+  "scripts": {
+    "start": "node ./app.js"
+  },
+// En la consola ejecutar
+npm run start
+
+// Esta dependencia sirve para reiniciar el servidor y runear, sin necesidad de ir a la consola
+npm i -D nodemon
+
+// Y agregamos la siguiente linea en Scropt
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js" //Agregamos
+  },
+
+  //Con el siguiente codigo solo guardamos cambios y se veran en consola
+  npm run server
+
+  ---------------------Creando servidor con Express--------
+NOTA: para hacer comillas invertida ``, es con AltGr y la tecla }
+
+// Importa el módulo 'express' para crear y manejar un servidor web
+const express = require('express')
+
+// Llama a la función 'express' para crear una instancia de la aplicación
+const app = express()
+
+// Define el puerto en el que el servidor escuchará las solicitudes
+const port = 3000;
+
+// Inicia el servidor y escucha en el puerto especificado
+app.listen(port, () => {
+    console.log(`El Servidor está funcionando en el puerto ${port}`)
+})
+
+// Tambien vamos a enrutar de la siguiente forma
+
+app.get('/', function (req, res) {
+    res.send('Hola Mundo en express ')
+});
+
+app.get('/nosotros', function (req, res) {
+    res.send('Esta es la pagina de nosotros')
+});
+
+//Existen diferentes metodos para "res", como:
+-send("Envio de texto")
+-json({msg: 'Envio de json'})
+-render(proximamante)
+
+------------Habilitando ES Modules en Node-----------
+
+en vez de:
+const express = require('express') ((CommonJS))
+reemplazamos
+import express from 'express' //ES6
+
+-----------Que es el Routing-------------
+
+El riouting es por donde van a transitar los usuarios de nuestro sitio 
+web o aplicacion.
+Con diferentes rutas, nuestros usuarios podran navegar a lo largo
+de diferentes secciones del sitio web o llenar diferentes formularios
+
+Metodos HTTP
+
+Get - Utilizado para Mostrar Informacion
+Post - Utilizado para Enviar Informacion
+Put/Patch - Utilizado para Actualizar Informacion
+Delete . Utilizado para Eliminar Informacion
+
+------------Que es un Template Engine-------
+
+Template Engine o Motores de Plantillas son tecnologias
+que nos permiten crear codigo HTML y mostrar informacion 
+contenida en vatiables de una forma mas compacta y clara
+
+Pug, Handlebars, EJS son las opciones mas populares
+para Node.js
+
+Tambien es posible utilizar React. Angular, Svelte o Vue 
+como tu Template Engine; pero necesitaras crearuna API con respuestas json
+
+-Habilitando Pug y como funciona:
+
+npm i pug --Instalamos pug
+
+Agregamos en el archivo principal
+// Habilitar Pug
+app.set('view engine', 'pug')
+app.set('views', './views')
+
+---------Que es MVC----------
+
+MVC son las inciales de Model View Controller
+
+Es un patrón de arquitectura de software que permite la separacion
+de obligaciones de cada pieza de tu codigo
+
+Enfatiza la separacion de la logica de programacion con la presentacion
+
+Ventajas::
+
+No mejora el performance del codigo, tampoco seguridad; pero tu 
+codigo tendra un mejor orden y sera facil de mantener.
+
+En un grupo de trabajo, el tener el codigo ordenado permite que
+más 
+
+M = Model o Modelo
+V = View o Vista
+C = Controller o Controlador
+
+Modelo:- Encargado de todas las interacciones en la BBDD, obtener 
+datos, actualizarlo y eliminarlos
+
+-El Modelo se encarga de consultar una base de datos, obtiene la
+informacion pero no la muestra, eso es trabajo de la Vista
+
+-El Modelo tampoco se encarga de actualizar la informacion directamente,
+es el Controlador quien decide cuando llamarlo
+
+Vista: -Se encarga de todo lo que es pantalla (HTML)
+
+-Node soporta multimples Tamplates Engine como son EJS, PUG, Handlebans
+
+-Si utlizas React, Vue, Angular, Svelte,  estos serian tu Vista
+
+-El Modelo consulta la bases de datos, pero es por el medio del 
+controlador que se decide que Vista hay que llamar y que datos presentar
+
+Controlador: -Es el que comunica modelo y vista; antes de que Modelo
+consulte la base de datos el Controlador es el encargado
+de llamar un Modelo en especifico 
+
+Router: -Es el encargado de registrar todas las URLS o Endpoints
+que va a soportar nuestra aplicacion.
+
+Ejemplo: Si el Usuarui accede a /clientes el router ta tiene 
+registrada esa ruta y un controlador con una funcion que sabe que 
+Modelo debe llamar, que vista mostrar cuando el usuario visita esa URL
+
+FORMAS DE HACER EXPORTABLE UN SCRIPT
+
+export default router // Con este logramos que toda la logica del script sea 
+
+export {              //
+    formularioLogin   // Este codigo se usa por funcion 
+}                     //
+
+---------Instalacion de TailwindCSS-----
+
+npm i -D tailwindcss
+npm i -D tailwindcss autoprefixer postcss postcss-cli  
+
+Despues en archivo en CSS, colocar el siguiente codigo
+
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+
+y inicializamos con
+npx tailwindcss init -p 
+
+para compilar los contenido css, es con el siguiente comando 
+npm run css
+
+-------------Que es una ORM-------------
+
+ORM son las iniciales de Object Relational Mapping
+
+Es una Técnologia que se utiliza donde los datos de una bases de datos 
+son tratados como Objetos, utilizando el paradigma POO (Programacion Orientado a Objetos)
+Node.js tiene una gran cantidad ORM's que se instalan como libreria
+En MVC; un ORM se relaciona bastante con el Modelo
+
+Ventajas:
+-Comenzar a crear aplicaciones que utilicen bases de datos, sin necesidad de escribir
+codigo SQL y tam0poco saber sobre modelado de bases de datos
+-Velicodad den desarrollo ya que tienen una gran cantidad de métodos para crear, listar,
+actualizar o eliminar datos
+-Evita las inyecciones de seguridad
+Ejemplo:
+°°SQL
+INSERT INTO `categorias` (`nombre`) VALUES ('Casa');
+°°ORM
+Categoria.create({nombre: 'Casa'}) - Modelo.metodo({objeto:'nombre'})
+
+Ejemplos de ORM:
+-Prisma
+-Mongoose
+-Sequelize (este utilizaremos para el curso)
+-TypeORM
+-Bookshelf.js
+
+Instalacion de ORM Sequelize
+npm i sequelize mysql2
+
+------------------------------------------
+Ahora para tener mas seguro las credenciales de las BBDD en db.js
+tenemos que incriptar, tenemos que instalar lo siguiente
+
+npm i dotenv
+
+y creamos el archivo .env para pasar los valores incriptados la llevamos como variables de entorno a 
+traves del metodo process y el nombre del archivo .env
+
+En db colocamos lo siguiente para que nuestro codigo funcione
+
+import dotenv from 'dotenv'
+dotenv.config({ path: '.env' })
+
+-----------Validacion------
+
+Para la validacion, estaremos usando la siguiente dependencia
+npm i express-validator
+
+En usuarioController.js, importamos la dependencia de esta forma
+import {check, validationResult} from 'express-validator'
+
+--------Hashear Password------
+
+Previamente al codigo, instalamos las siguientes dependencias
+npm i bcrypt
+Eh iniciamos el codigo desde el Usuario.js y creamos los usuarios.
+
+Ahora falta que el usuario verifique su Correo desde el correo del propio usuario,esto ira principalmente en la columna TOKEN, y es lo que se editara en la carpeta HELPERS 
+
+Para Mostrar un mensaje de que el usuario debe Confirmar su cuenta, creamos la carpeta Templates en View, con un archivo mensaje.pug en el cual mostrara el contenido que le enviamos y en el controlador lo mandamos a llamar  
+
+    res.render('templates/mensaje', {
+        pagina: 'Cuenta Creada Correctamente',
+        mensaje: 'Hemos Enviado un Email de Confirmacion, presiona en el enlace'
+    })
+
+Ahora enviaremos un correo al usuario, para esto descargamos la siguiente dependencia NodeMailer
+
+--npm i nodemailer--
+
+y para simular los envios de email, usaremos mailtrap.ia, nos creamos una cuenta en Inboxes, creamos el proyecto y dentro del proyecto nos dan unas credenciales y registramos esas credenciales en ENV. para mas seguridad y en HELPERS creamos el archivo emails.js 
+
+----------------Token----------------
+
+Para validacion de un correo se necesita un token unico, en el cual se le enviara al usuario una vez que se registre, asi le llega al correo y cuando pinche en el enlace colocamos el token en la bases de datos NULL y el campo confirmado en TRUE
+
+ //Confirmar la cuenta
+    usuario.token = null
+    usuario.confirmado = true
+    await usuario.save()
+
+    res.render('auth/confirmar-cuenta', {
+        pagina: 'Cuenta Confirmada',
+        mensaje: 'Esta cuenta se confirmo correctamente'
+    })
+}
+
+-------------- Habilitando proteccion CSRF ------------
+
+El Cross de Request for Giri, es para todos los formulario y para hacer una validacion EXtra
+Usaremos la libreria CSURF, la dependencia es la siguiente
+
+-npm i csurf cookie-parser
+
+-------------- Recuperar Contraseña -----------------
+
+Para recuperar la contraseña debemos crear un nuevo Tokens, porque recordemos que al momento que un usuario se registra los tokens pasan a NULLs, para eso creamos una nueva funcion en el Controlador ResetPassword
