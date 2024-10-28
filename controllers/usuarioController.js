@@ -1,15 +1,74 @@
 import { check, validationResult } from 'express-validator'
 import bcrypt from 'bcrypt'
 import Usuario from '../models/Usuario.js'
-import { generarId } from '../helpers/tokens.js'
+import { generarJWT, generarId } from '../helpers/tokens.js'
 import { emailRegistro, emailOlvidePassword } from '../helpers/emails.js'
 import csurf from 'csurf'
 
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
-        pagina: 'Iniciar Sesión'
+        pagina: 'Iniciar Sesión',
+        csrfToken: req.csrfToken()
     })
 }
+const autenticar = async (req, res) => {
+    // Validación
+    await check('email').isEmail().withMessage('Eso no parece un email').run(req)
+    await check('password').notEmpty().withMessage('El Password es Obligatorio').run(req)
+
+    let resultado = validationResult(req) // Se obtienen los resultados de la validación
+
+    // Verificar que el resultado este vacío
+    if (!resultado.isEmpty()) {
+        //Errores
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken: req.csrfToken(), // Colocamos el Token para que al segundo CLICK no le aparezca error de Tocken
+            errores: resultado.array()
+        })
+    }
+    // Comprobar si el usuario existe
+    const { email, password } = req.body
+
+    const usuario = await Usuario.findOne({ where: { email } })
+    if (!usuario) {
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken: req.csrfToken(), // Colocamos el Token para que al segundo CLICK no le aparezca error de Tocken
+            errores: [{ msg: 'El Usuario No Existe' }]
+        })
+    }
+
+    // Comprobar si el usuario esta confirmado 
+
+    if (!usuario.confirmado) {
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken: req.csrfToken(), // Colocamos el Token para que al segundo CLICK no le aparezca error de Tocken
+            errores: [{ msg: 'Tu cuenta no a sido Confirmada' }]
+        })
+    }
+
+    // Revisar el Password
+    if (!usuario.verificarPassword(password)) {
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken: req.csrfToken(), // Colocamos el Token para que al segundo CLICK no le aparezca error de Tocken
+            errores: [{ msg: 'Tu Password es Incorrecto' }]
+        })
+    }
+    //Autenticar al Usuario
+    const token = generarJWT({ id: usuario.id, nombre: usuario.nombre })
+    console.log(token)
+
+    // Almacenar en un Cookie
+
+    return res.cookie('_token', token, {
+        httpOnly: true
+        // secury: true
+    }).redirect('/mis-propiedades')
+}
+
 const formularioRegistro = (req, res) => {
     res.render('auth/registro', {
         pagina: 'Crear Cuenta ',
@@ -224,11 +283,13 @@ const nuevoPassword = async (req, res) => {
 
 export {
     formularioLogin,
+    autenticar,
     formularioRegistro,
     registrar,
     confirmar,
     formularioOlvidePassword,
     resetPassword,
     comprobarToken,
-    nuevoPassword
+    nuevoPassword,
+
 }

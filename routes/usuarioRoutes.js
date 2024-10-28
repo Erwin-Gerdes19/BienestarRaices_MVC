@@ -1,6 +1,6 @@
 import express from 'express'
 import {
-    formularioLogin, formularioRegistro, formularioOlvidePassword, confirmar, registrar, resetPassword, comprobarToken, nuevoPassword
+    formularioLogin, autenticar, formularioRegistro, formularioOlvidePassword, confirmar, registrar, resetPassword, comprobarToken, nuevoPassword
 
 } from '../controllers/usuarioController.js'
 
@@ -9,6 +9,7 @@ const router = express.Router()
 //Routing
 
 router.get('/login', formularioLogin);
+router.post('/login', autenticar);
 
 router.get('/registro', formularioRegistro);
 router.post('/registro', registrar);

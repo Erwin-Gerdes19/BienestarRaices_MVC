@@ -273,3 +273,9 @@ Usaremos la libreria CSURF, la dependencia es la siguiente
 -------------- Recuperar Contraseña -----------------
 
 Para recuperar la contraseña debemos crear un nuevo Tokens, porque recordemos que al momento que un usuario se registra los tokens pasan a NULLs, para eso creamos una nueva funcion en el Controlador ResetPassword
+
+------------- Autenticar a un usuario ----------------
+
+En la parte de Login vamos a autenticar el usuario, llevarlo a la Bases de datos y comprobar si por correo su Password es correcta, para esto utilizaremos JSONWEBTOKEN
+
+- npm install jsonwebtoken

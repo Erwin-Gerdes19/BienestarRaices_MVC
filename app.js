@@ -4,6 +4,7 @@ import express from 'express'
 import csurf from 'csurf'
 import cookieParser from 'cookie-parser'
 import usuarioRoutes from './routes/usuarioRoutes.js'
+import propiedadRoutes from './routes/propiedadesRoutes.js'
 import db from './config/db.js'
 import { cookie } from 'express-validator'
 
@@ -36,7 +37,9 @@ app.set('views', './views')
 //Carpeta publica
 app.use(express.static('public'))
 
+// Routing
 app.use('/auth', usuarioRoutes) // en caso que busque en /auth, buscara en el archivo usuarioRoutes
+app.use('/', propiedadRoutes)
 
 // Inicia el servidor y escucha en el puerto especificado
 const port = process.env.PORT || 3000;
