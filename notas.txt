@@ -279,3 +279,11 @@ Para recuperar la contraseña debemos crear un nuevo Tokens, porque recordemos q
 En la parte de Login vamos a autenticar el usuario, llevarlo a la Bases de datos y comprobar si por correo su Password es correcta, para esto utilizaremos JSONWEBTOKEN
 
 - npm install jsonwebtoken
+
+-------------- Mapa ------------------
+
+Para colocar un mapa colocamos en primer lugar la dependencia webpack
+
+npm i -D webpack webpack-cli
+
+luego creamos un archivo webpack.config.js de esta manera condifurmos la entrada y salida de este 
