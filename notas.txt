@@ -287,3 +287,13 @@ Para colocar un mapa colocamos en primer lugar la dependencia webpack
 npm i -D webpack webpack-cli
 
 luego creamos un archivo webpack.config.js de esta manera condifurmos la entrada y salida de este 
+
+------------Ejecucion de multiples tareas en package.json-------------
+
+Se usa Concurrenly, instalacion de dependencia
+
+npm i -D concurrently
+
+luego se configura en package json
+
+    "dev": "concurrently \"npm run server\" \"npm run css\" \"npm run js\""
